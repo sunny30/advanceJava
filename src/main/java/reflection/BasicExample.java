@@ -1,10 +1,11 @@
 package reflection;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 class Employee{
 
-    public String id ;
+    private String id ;
     public String name ;
     private  String password ;
 
@@ -18,8 +19,8 @@ class Employee{
         return this.password;
     }
 
-    public void setId(String Id){
-
+    public String getId(){
+        return this.id ;
     }
 
     public void setName(String name) {
@@ -44,9 +45,14 @@ public class BasicExample {
         System.out.println(Arrays.asList(clazz.getDeclaredMethods()));
 
         Method method = clazz.getMethod("setPassword", String.class);
+        Field idField = clazz.getDeclaredField("id") ;
 
         Employee employee = (Employee) clazz.getDeclaredConstructor(new Class[] {String.class,String.class}).newInstance(new Object[] {"a","b"});
+        method.setAccessible(true);
+        idField.setAccessible(true);
         method.invoke(employee, "hello");
+        idField.set(employee,"achanged");
         System.out.println(employee.getPassword());
+        System.out.println(employee.getId());
     }
 }
